@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  gingerscan:
+    build: .
+    container_name: gingerscan
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./results:/app/results
+      - ./config:/app/config
+    environment:
+      - PYTHONPATH=/app
+      - PYTHONUNBUFFERED=1
+    networks:
+      - gingerscan-net
+    restart: unless-stopped
+    # Allow container to access host network for scanning
+    network_mode: host
+    privileged: true
+    cap_add:
+      - NET_RAW
+      - NET_ADMIN
+    security_opt:
+      - seccomp:unconfined
+
+  # Optional: Redis for caching scan results
+  redis:
+    image: redis:7-alpine
+    container_name: gingerscan-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - gingerscan-net
+    restart: unless-stopped
+
+  # Optional: PostgreSQL for storing scan history
+  postgres:
+    image: postgres:15-alpine
+    container_name: gingerscan-postgres
+    environment:
+      - POSTGRES_DB=networktools
+      - POSTGRES_USER=networktools
+      - POSTGRES_PASSWORD=networktools
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - gingerscan-net
+    restart: unless-stopped
+
+volumes:
+  redis_data:
+  postgres_data:
+
+networks:
+  gingerscan-net:
+    driver: bridge

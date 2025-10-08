@@ -1,0 +1,348 @@
+# Ginger Scan - Default Configuration
+# This file contains default settings for network scanning and analysis
+
+# Default scan configuration
+default_scan:
+  timeout: 3.0
+  rate_limit: 100
+  threads: 50
+  banner_grab: true
+  host_discovery: true
+  vuln_check: false
+
+# Scan type specific settings
+scan_types:
+  tcp_connect:
+    timeout: 3.0
+    rate_limit: 100
+  tcp_syn:
+    timeout: 2.0
+    rate_limit: 200
+    requires_root: true
+  udp:
+    timeout: 5.0
+    rate_limit: 50
+
+# Output settings
+output:
+  default_format: json
+  save_reports: true
+  report_directory: ./reports
+  timestamp_format: "%Y-%m-%d_%H-%M-%S"
+  
+  # File naming patterns
+  scan_results: "scan_{target}_{timestamp}.{format}"
+  reports: "report_{target}_{timestamp}.{format}"
+  vulnerabilities: "vulns_{target}_{timestamp}.{format}"
+
+# Banner grabbing configuration
+banner_grabbing:
+  enabled: true
+  timeout: 5.0
+  max_banner_length: 1024
+  ssl_ports: [443, 993, 995, 465, 587, 636, 990, 992, 994, 989, 990]
+  
+  # Service patterns
+  service_patterns:
+    ssh:
+      pattern: "SSH-(\\d+\\.\\d+)"
+      ports: [22, 2222]
+      confidence: 0.9
+    http:
+      pattern: "HTTP/(\\d+\\.\\d+)"
+      ports: [80, 8080, 8000, 8008, 8888]
+      confidence: 0.8
+    https:
+      pattern: "HTTP/(\\d+\\.\\d+)"
+      ports: [443, 8443]
+      confidence: 0.8
+    ftp:
+      pattern: "(\\d{3}) (.*)"
+      ports: [21, 2121]
+      confidence: 0.9
+
+# Host discovery configuration
+host_discovery:
+  enabled: true
+  methods:
+    icmp_ping: true
+    arp_scan: true
+    dns_resolution: true
+  
+  # ICMP ping settings
+  icmp:
+    timeout: 3.0
+    count: 1
+    interval: 0.1
+  
+  # ARP scan settings
+  arp:
+    timeout: 2.0
+    retry: 1
+  
+  # DNS resolution settings
+  dns:
+    timeout: 5.0
+    retry: 2
+
+# Vulnerability checking configuration
+vulnerability:
+  enabled: false
+  checks:
+    anonymous_ftp: true
+    ssl_certificates: true
+    http_headers: true
+    default_credentials: true
+  
+  # SSL/TLS settings
+  ssl:
+    check_expiration: true
+    check_self_signed: true
+    check_weak_ciphers: true
+    min_key_size: 2048
+  
+  # HTTP security headers
+  http_headers:
+    required_headers:
+      - "X-Content-Type-Options"
+      - "X-Frame-Options"
+      - "X-XSS-Protection"
+      - "Strict-Transport-Security"
+      - "Content-Security-Policy"
+  
+  # External services
+  external:
+    shodan_api_key: ""
+    virustotal_api_key: ""
+    enable_shodan: false  # Enable when API key is provided
+    enable_virustotal: false
+
+# Shodan API Integration Configuration
+shodan:
+  # API Configuration
+  api_key: ""  # Set your Shodan API key here or via env var
+  enabled: true  # Enable Shodan integration by default
+  timeout: 30
+  
+  # Caching settings
+  cache:
+    enabled: true
+    duration: 3600  # Cache duration in seconds (1 hour)
+    max_entries: 1000
+    
+  # Rate limiting
+  rate_limit:
+    max_requests: 100  # Requests per time window
+    time_window: 3600  # Time window in seconds (1 hour)
+    
+  # Features to enable
+  features:
+    host_lookup: true
+    vulnerability_check: true
+    passive_detection: true
+    organization_search: true
+    honeypot_detection: true
+    historical_data: false  # Requires paid plan
+    
+  # Service detection enhancement
+  service_detection:
+    enabled: true
+    confidence_threshold: 0.5
+    prefer_shodan_data: false  # Use Shodan data over direct scanning
+    
+  # Vulnerability assessment
+  vulnerability_assessment:
+    enabled: true
+    include_cvss: true
+    check_exploits: true
+    severity_filter: "medium"  # minimum severity: low, medium, high, critical
+    
+  # Threat intelligence
+  threat_intelligence:
+    enabled: true
+    check_reputation: true
+    check_malware: true
+    check_honeypots: true
+    honeypot_threshold: 0.5  # 0.0-1.0
+    
+  # Search and discovery
+  search:
+    max_results: 100
+    include_metadata: true
+    facet_analysis: true
+    
+  # Organization discovery
+  organization:
+    enabled: false  # Requires API key with search credits
+    max_hosts: 50
+    include_subdomains: true
+    
+  # Data enrichment
+  enrichment:
+    geolocation: true
+    asn_info: true
+    ssl_certificates: true
+    service_banners: true
+    
+  # Output integration
+  output:
+    include_in_reports: true
+    separate_section: true
+    confidence_indicators: true
+    raw_data_export: false
+    
+  # Error handling
+  error_handling:
+    retry_attempts: 3
+    retry_delay: 1  # seconds
+    fallback_mode: true  # Continue without Shodan if API fails
+    log_errors: true
+
+# Web dashboard configuration
+dashboard:
+  host: "0.0.0.0"
+  port: 8000
+  debug: false
+  title: "Ginger Scan Dashboard"
+  
+  # Authentication (future feature)
+  auth:
+    enabled: false
+    username: "admin"
+    password: ""
+  
+  # Rate limiting
+  rate_limit:
+    enabled: true
+    requests_per_minute: 60
+  
+  # CORS settings
+  cors:
+    enabled: true
+    origins: ["*"]
+
+# Logging configuration
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "./logs/network_tools.log"
+  max_size: "10MB"
+  backup_count: 5
+  
+  # Log rotation
+  rotation:
+    when: "midnight"
+    interval: 1
+    backup_count: 7
+
+# Performance settings
+performance:
+  # Memory management
+  max_memory_usage: "1GB"
+  result_batch_size: 1000
+  
+  # Network settings
+  connection_pool_size: 100
+  connection_timeout: 30
+  read_timeout: 60
+  
+  # Async settings
+  max_concurrent_tasks: 1000
+  task_timeout: 300
+
+# Security settings
+security:
+  # Input validation
+  max_targets: 1000
+  max_ports_per_target: 65535
+  max_scan_duration: 3600  # 1 hour
+  
+  # Output sanitization
+  sanitize_banners: true
+  remove_sensitive_data: true
+  
+  # Access control
+  allowed_networks: []
+  blocked_networks: []
+  require_authentication: false
+
+# Report generation settings
+reports:
+  # HTML reports
+  html:
+    template: "default"
+    include_charts: true
+    include_tables: true
+    include_summary: true
+    chart_theme: "plotly_white"
+  
+  # PDF reports
+  pdf:
+    page_size: "A4"
+    orientation: "portrait"
+    margin: "1inch"
+    font_size: 10
+  
+  # Report sections
+  sections:
+    executive_summary: true
+    technical_details: true
+    vulnerability_analysis: true
+    recommendations: true
+    appendices: true
+
+# Database settings (future feature)
+database:
+  enabled: false
+  type: "sqlite"  # sqlite, postgresql, mysql
+  host: "localhost"
+  port: 5432
+  name: "network_tools"
+  username: "network_tools"
+  password: ""
+  
+  # Connection pool
+  pool_size: 10
+  max_overflow: 20
+  pool_timeout: 30
+
+# Notification settings (future feature)
+notifications:
+  enabled: false
+  email:
+    smtp_server: "smtp.gmail.com"
+    smtp_port: 587
+    username: ""
+    password: ""
+    from_address: "gingerscan@users.noreply.github.com"
+  
+  # Webhook notifications
+  webhooks:
+    enabled: false
+    url: ""
+    secret: ""
+
+# Plugin settings
+plugins:
+  enabled: true
+  directory: "./plugins"
+  auto_load: true
+  
+  # Plugin-specific settings
+  custom_scanners: []
+  custom_parsers: []
+  custom_reporters: []
+
+# Development settings
+development:
+  debug: false
+  profile: false
+  test_mode: false
+  
+  # Testing
+  mock_network: false
+  test_data_dir: "./test_data"
+  
+  # Development tools
+  enable_profiler: false
+  enable_debugger: false
