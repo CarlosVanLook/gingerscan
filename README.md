@@ -1,4 +1,9 @@
 # Ginger Scan
+<p align="center">
+  <img src="assets/logo.png" alt="GingerScan Logo" width="200">
+  <img src="assets/text.png" alt="GingerScan text" width="200">
+</p>
+
 
 A comprehensive Python toolkit for network scanning, banner grabbing, host discovery, and security assessment. Built with modern Python features including asyncio, type hints, and a modular architecture.
 
@@ -117,6 +122,22 @@ Access the dashboard at `http://localhost:8000`
 - **Host Information**: Geolocation, ISP, ASN data in all report formats
 - **Graceful Cancellation**: Stop scans immediately with automatic next scan progression
 
+## Dashboard Preview
+
+Here's a look at the interactive web dashboard built with FastAPI:
+
+<p align="center">
+  <img src="assets/Screenshot1.jpg" alt="GingerScan Dashboard - Main Interface" width="800">
+</p>
+
+<p align="center">
+  <img src="assets/Screenshot2.jpg" alt="GingerScan Dashboard - Scan Results" width="800">
+</p>
+
+<p align="center">
+  <img src="assets/Screenshot3.jpg" alt="GingerScan Dashboard - Reports" width="800">
+</p>
+
 ## Configuration
 
 Create a `config.yaml` file:
@@ -175,6 +196,12 @@ ip_info:
 gingerscan/
 ├── __init__.py
 ├── __main__.py
+├── assets/
+│   ├── logo.png
+│   ├── text.png
+│   ├── Screenshot1.jpg
+│   ├── Screenshot2.jpg
+│   └── Screenshot3.jpg
 ├── config/
 │   ├── default.yaml
 │   └── local.yaml
@@ -187,7 +214,6 @@ gingerscan/
 │   └── usage.md
 ├── install.sh
 ├── LICENSE
-├── logo.png
 ├── logs/
 ├── PROJECT_SUMMARY.md
 ├── README.md
@@ -203,7 +229,6 @@ gingerscan/
 │   ├── test_parser.py
 │   ├── test_reporter.py
 │   └── test_scanner.py
-├── text.png
 └── tools/
     ├── __init__.py
     ├── banner_grabber.py

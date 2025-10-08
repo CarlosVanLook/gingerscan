@@ -111,7 +111,7 @@ class WebDashboard:
             """Main dashboard page."""
             return self._get_dashboard_html()
         
-        @self.app.get("/logo.png")
+        @self.app.get("/assets/logo.png")
         async def get_logo():
             """Serve logo image."""
             import os
@@ -119,10 +119,10 @@ class WebDashboard:
             
             # Try multiple possible paths
             possible_paths = [
+                os.path.join(os.path.dirname(os.path.dirname(__file__)), "assets", "logo.png"),
                 os.path.join(os.path.dirname(os.path.dirname(__file__)), "logo.png"),
-                os.path.join(os.path.dirname(os.path.dirname(__file__)), "static", "logo.png"),
-                "logo.png",
-                "static/logo.png"
+                "assets/logo.png",
+                "logo.png"
             ]
             
             for logo_path in possible_paths:
@@ -132,7 +132,7 @@ class WebDashboard:
             from fastapi.responses import JSONResponse
             return JSONResponse({"error": "Logo not found"}, status_code=404)
         
-        @self.app.get("/text.png")
+        @self.app.get("/assets/text.png")
         async def get_text():
             """Serve text image."""
             import os
@@ -140,11 +140,10 @@ class WebDashboard:
             
             # Try multiple possible paths
             possible_paths = [
+                os.path.join(os.path.dirname(os.path.dirname(__file__)), "assets", "text.png"),
                 os.path.join(os.path.dirname(os.path.dirname(__file__)), "text.png"),
-                os.path.join(os.path.dirname(os.path.dirname(__file__)), "static", "text.png"),
-                "/home/isdevis/Desktop/network-tools/text.png",
-                "text.png",
-                "static/text.png"
+                "assets/text.png",
+                "text.png"
             ]
             
             for text_path in possible_paths:
@@ -3486,11 +3485,11 @@ class WebDashboard:
         <div class="header">
             <div class="header-content">
                 <div class="logo-container">
-                    <img src="/logo.png" alt="GingerScan Logo" class="logo">
+                    <img src="assets/logo.png" alt="GingerScan Logo" class="logo">
                 </div>
                 <div class="header-text">
-                    <img src="/text.png" alt="GingerScan Text" class="text-image">
-                </div>
+                    <img src="assets/text.png" alt="GingerScan Text" class="text-image">
+                </div>  
             </div>
         </div>
         
