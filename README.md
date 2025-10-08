@@ -1,8 +1,9 @@
 # Ginger Scan
-<p align="center">
-  <img src="assets/logo.png" alt="GingerScan Logo" width="200">
-  <img src="assets/text.png" alt="GingerScan text" width="200">
-</p>
+
+<div align="center" style="display: flex; align-items: center; justify-content: center; gap: 30px; margin: 20px 0;">
+  <img src="assets/logo.png" alt="GingerScan Logo" style="height: 150px; width: auto; max-width: 500px; object-fit: contain;">
+  <img src="assets/text.png" alt="GingerScan Text" style="height: 120px; width: auto; max-width: 600px; object-fit: contain;">
+</div>
 
 
 A comprehensive Python toolkit for network scanning, banner grabbing, host discovery, and security assessment. Built with modern Python features including asyncio, type hints, and a modular architecture.
